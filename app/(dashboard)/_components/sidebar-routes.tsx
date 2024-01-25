@@ -1,10 +1,12 @@
-"use client";
+"use client"
 
 import { BarChart, Compass, Layout, List } from "lucide-react";
+// Assuming usePathname is correctly imported from your project's setup
 import { usePathname } from "next/navigation";
 
 import { SidebarItem } from "./sidebar-item";
 
+// Define the guest routes
 const guestRoutes = [
   {
     icon: Layout,
@@ -18,6 +20,7 @@ const guestRoutes = [
   },
 ];
 
+// Define the teacher routes
 const teacherRoutes = [
   {
     icon: List,
@@ -29,14 +32,35 @@ const teacherRoutes = [
     label: "Analytics",
     href: "/teacher/analytics",
   },
-]
+];
+
+// Define the admin routes
+const adminRoutes = [
+  {
+    icon: List,
+    label: "Users",
+    href: "/admin/create",
+  },
+  {
+    icon: BarChart,
+    label: "AnalyticsAdmin",
+    href: "/admin/analytics",
+  },
+];
 
 export const SidebarRoutes = () => {
   const pathname = usePathname();
 
+  // Determine if the current page is for teacher or admin
   const isTeacherPage = pathname?.includes("/teacher");
+  const isAdminPage = pathname?.includes("/admin");
 
-  const routes = isTeacherPage ? teacherRoutes : guestRoutes;
+  // Choose the routes based on the current page
+  const routes = isAdminPage
+    ? adminRoutes
+    : isTeacherPage
+    ? teacherRoutes
+    : guestRoutes;
 
   return (
     <div className="flex flex-col w-full">
@@ -49,5 +73,5 @@ export const SidebarRoutes = () => {
         />
       ))}
     </div>
-  )
-}
+  );
+};
