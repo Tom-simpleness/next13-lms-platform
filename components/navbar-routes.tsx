@@ -7,7 +7,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { isTeacher } from "@/lib/teacher";
-
+import { isAdmin } from "@/lib/admin";
 import { SearchInput } from "./search-input";
 
 export const NavbarRoutes = () => {
@@ -16,6 +16,7 @@ export const NavbarRoutes = () => {
 
   const isTeacherPage = pathname?.startsWith("/teacher");
   const isCoursePage = pathname?.includes("/courses");
+  const isAdminPage = pathname?.startsWith("/admin");
   const isSearchPage = pathname === "/search";
 
   return (
@@ -25,6 +26,22 @@ export const NavbarRoutes = () => {
           <SearchInput />
         </div>
       )}
+      <div className="flex gap-x-2 ml-auto">
+        {isAdminPage ? (
+          <Link href="/">
+            <Button size="sm" variant="ghost">
+              <LogOut className="h-4 w-4 mr-2" />
+              Exit admin
+            </Button>
+          </Link>
+        ) : isAdmin(userId) ? (
+          <Link href="/admin/users">
+            <Button size="sm" variant="ghost">
+              Admin mode
+            </Button>
+          </Link>
+        ) : null}
+      </div>
       <div className="flex gap-x-2 ml-auto">
         {isTeacherPage || isCoursePage ? (
           <Link href="/">
@@ -40,10 +57,8 @@ export const NavbarRoutes = () => {
             </Button>
           </Link>
         ) : null}
-        <UserButton
-          afterSignOutUrl="/"
-        />
+        <UserButton afterSignOutUrl="/" />
       </div>
     </>
-  )
-}
+  );
+};

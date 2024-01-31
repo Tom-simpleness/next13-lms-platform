@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { BarChart, Compass, Layout, List } from "lucide-react";
 // Assuming usePathname is correctly imported from your project's setup
@@ -39,7 +39,7 @@ const adminRoutes = [
   {
     icon: List,
     label: "Users",
-    href: "/admin/create",
+    href: "/admin/users",
   },
   {
     icon: BarChart,

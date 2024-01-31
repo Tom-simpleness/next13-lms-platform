@@ -27,6 +27,7 @@ const formSchema = z.object({
     .string()
     .email({ message: "Invalid email address" })
     .min(1, "Email is required"),
+  role: z.enum(["admin", "student", "teacher"]),
 });
 
 const AdminPage = () => {
@@ -37,6 +38,7 @@ const AdminPage = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
+      role: "student",
     },
   });
 
@@ -46,7 +48,7 @@ const AdminPage = () => {
     try {
       // Corrected to include form values in the POST request
       const response = await axios.post("/api/users", values);
-      console.log(response);
+
       toast.success("User created");
       // Corrected to append the new email to the existing emails array
       setEmails((currentEmails) => [...currentEmails, values.email]);
@@ -85,6 +87,24 @@ const AdminPage = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>Role : </FormLabel>
+                  <FormControl>
+                    <select {...field} disabled={isSubmitting}>
+                      <option value="student">Student</option>
+                      <option value="teacher">Teacher</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </FormControl>
+                  <FormMessage>{fieldState.error?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+
             <div className="flex items-center gap-x-2">
               <Link href="/" passHref>
                 <Button type="button" variant="ghost">
